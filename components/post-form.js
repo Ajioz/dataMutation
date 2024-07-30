@@ -2,11 +2,11 @@
 
 import React from "react";
 import FormSubmit from "@/components/form-submit";
+import { useFormState } from "react-dom";
 
 
-
-const PostForm = () => {
-  const [state, formAction] = useFormState(createPost, {});
+const PostForm = ({action}) => {
+  const [state, formAction] = useFormState(action, {});
   return (
     <>
       <h1>Create a new post</h1>
@@ -31,6 +31,9 @@ const PostForm = () => {
         <p className="form-actions">
           <FormSubmit />
         </p>
+        {state.errors && <ul className="form-errors">
+          {state.errors.map((error, index) => <li key={index}>{error}</li>)}
+        </ul>}
       </form>
     </>
   );
