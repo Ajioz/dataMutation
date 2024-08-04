@@ -1,8 +1,11 @@
+"use client";
+
+import { useOptimistic } from "react";
 import { formatDate } from "@/lib/format";
 import LikeButton from "./like-icon";
 import { togglePostLikeStatus } from "@/actions/serverAction";
 
-function Post({ post }) {
+function Post({ post, optimiUI }) {
   return (
     <article className="post">
       <div className="post-image">
@@ -21,7 +24,7 @@ function Post({ post }) {
           </div>
           <div>
             <form
-              action={togglePostLikeStatus.bind(null, post.id)}
+              action={optimiUI.bind(null, post.id)}
               className={post.isLiked ? "liked" : ""}
             >
               <LikeButton />
@@ -35,15 +38,39 @@ function Post({ post }) {
 }
 
 export default function Posts({ posts }) {
-  if (!posts || posts.length === 0) {
+  const [optimisticPosts, updateOptimisticPosts] = useOptimistic(
+    posts,
+    (prevPosts, updatedPostId) => {
+      const postIndex = prevPosts.findIndex(
+        (post) => post.id === updatedPostId
+      );
+
+      if (postIndex === -1) return prevPosts; // early return to the original post if no update detected
+
+      //time to manipulate with the like data
+      const updatedPost = { ...prevPosts[postIndex] };
+      updatedPost.likes = updatedPost.likes + (updatedPost.isLiked ? -1 : 1);
+      updatedPost.isLiked = !updatedPost.isLiked;
+      const newPosts = [...prevPosts]; //spread operator to copy content of aray
+      newPosts[postIndex] = updatedPost; //updated the new created array in an immutale way
+      return newPosts;
+    }
+  );
+
+  if (!optimisticPosts || optimisticPosts.length === 0) {
     return <p>There are no posts yet. Maybe start sharing some?</p>;
+  }
+
+  async function updatePost(postId) {
+    updateOptimisticPosts(postId);
+    await togglePostLikeStatus(postId);
   }
 
   return (
     <ul className="posts">
-      {posts.map((post) => (
+      {optimisticPosts.map((post) => (
         <li key={post.id}>
-          <Post post={post} />
+          <Post post={post} optimiUI={updatePost} />
         </li>
       ))}
     </ul>
