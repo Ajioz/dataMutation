@@ -3,7 +3,6 @@ import LikeButton from "./like-icon";
 import { togglePostLikeStatus } from "@/actions/serverAction";
 
 function Post({ post }) {
-  // console.log(post.isLiked);
   return (
     <article className="post">
       <div className="post-image">
