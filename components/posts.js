@@ -20,7 +20,8 @@ function Post({ post }) {
             </p>
           </div>
           <div className={post.isLIked ? 'liked' : ''}>
-            <LikeButton action={togglePostLikeStatus.bind(null, post.id)}/>
+            {/* <LikeButton action={togglePostLikeStatus.bind(null, post.id)}/> */}
+            <LikeButton action={() => togglePostLikeStatus(post.id)}/>
           </div>
         </header>
         <p>{post.content}</p>
