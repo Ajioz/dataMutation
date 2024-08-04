@@ -35,7 +35,7 @@ export const createPost = async (prevState, formData) => {
   redirect("/feed");
 };
 
-
 export const togglePostLikeStatus = async (postId) => {
+  // console.log(postId);
   updatePostLikeStatus(postId, 2);
-}
+};

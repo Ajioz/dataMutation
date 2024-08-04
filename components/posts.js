@@ -1,8 +1,9 @@
-import { formatDate } from '@/lib/format';
-import LikeButton from './like-icon';
-import { togglePostLikeStatus } from '@/actions/serverAction';
+import { formatDate } from "@/lib/format";
+import LikeButton from "./like-icon";
+import { togglePostLikeStatus } from "@/actions/serverAction";
 
 function Post({ post }) {
+  console.log({ post: post });
   return (
     <article className="post">
       <div className="post-image">
@@ -13,15 +14,19 @@ function Post({ post }) {
           <div>
             <h2>{post.title}</h2>
             <p>
-              Shared by {post.userFirstName} on{' '}
+              Shared by {post.userFirstName} on{" "}
               <time dateTime={post.createdAt}>
                 {formatDate(post.createdAt)}
               </time>
             </p>
           </div>
-          <div className={post.isLIked ? 'liked' : ''}>
-            {/* <LikeButton action={togglePostLikeStatus.bind(null, post.id)}/> */}
-            <LikeButton action={() => togglePostLikeStatus(post.id)}/>
+          <div>
+            <form
+              action={togglePostLikeStatus.bind(null, post.id)}
+              className={post.isLIked ? "liked" : ""}
+            >
+              <LikeButton />
+            </form>
           </div>
         </header>
         <p>{post.content}</p>

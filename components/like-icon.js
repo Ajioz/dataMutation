@@ -1,6 +1,9 @@
-export default function LikeButton({ action }) {
+"use client";
+
+export default function LikeButton() {
   return (
-    <button formAction={action} className="like-button">
+    <button className="like-button">
+      {/* <button formAction={action} className="like-button"> */}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
