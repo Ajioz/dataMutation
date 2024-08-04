@@ -3,7 +3,7 @@ import LikeButton from "./like-icon";
 import { togglePostLikeStatus } from "@/actions/serverAction";
 
 function Post({ post }) {
-  console.log({ post: post });
+  // console.log(post.isLiked);
   return (
     <article className="post">
       <div className="post-image">
@@ -23,7 +23,7 @@ function Post({ post }) {
           <div>
             <form
               action={togglePostLikeStatus.bind(null, post.id)}
-              className={post.isLIked ? "liked" : ""}
+              className={post.isLiked ? "liked" : ""}
             >
               <LikeButton />
             </form>
